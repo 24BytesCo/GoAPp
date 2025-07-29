@@ -1,131 +1,201 @@
-// src/app/admin/proyectos/proyecto-form/proyecto-form.component.ts
-import {
-  Component,
-  inject,
-  OnInit,
-  EventEmitter,
-  Output,
-  Input,
-  Type,
-} from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ProyectoService, Proyecto } from '../proyecto.service';
-import { switchMap, tap, of, Observable, firstValueFrom } from 'rxjs';
-import { Vereda, VeredaService } from '../vereda.service';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { AuthService } from '../../../core/auth.service';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { collection, doc, Firestore } from '@angular/fire/firestore';
-import { Storage as FirebaseStorage } from '@angular/fire/storage';
+import { Proyecto, ProyectoService } from '../../../core/services/proyecto.service';
+import { Vereda, VeredaService } from '../../../core/services/vereda.service';
+import Swal from 'sweetalert2';
+import { LoaderService } from '../../../core/services/loader';
+import { AuthService } from '../../../core/services/auth.service';
+import { map } from 'rxjs';
+
 @Component({
   selector: 'proyecto-form',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, NgSelectModule],
+  imports: [CommonModule, ReactiveFormsModule, NgSelectModule],
   templateUrl: './proyecto-form.html',
-  styleUrls: ['./proyecto-form.scss'],
 })
 export class ProyectoForm implements OnInit {
-  @Input() proyecto?: Proyecto; // si viene, es edición
-  @Output() saved = new EventEmitter<void>();
-  @Output() cancelled = new EventEmitter<void>();
-
+  // Inyección de dependencias utilizando el API moderno de Angular
   private fb = inject(FormBuilder);
-  private svc = inject(ProyectoService);
-  private veredaService = inject(VeredaService);
-  // private storage = inject(Storage);
-  private firestore = inject(Firestore);
-  private auth = inject(AuthService);
-  private storage = inject(FirebaseStorage); // ✅ ahora sí es FirebaseStorage
+  private proyectoSvc = inject(ProyectoService);
+  public veredaSvc = inject(VeredaService);
+  private loaderSvc = inject(LoaderService);
+  private authSvc = inject(AuthService);
 
-  previewUrls: string[] = []; // Para mostrar thumbnails
-  private filesToUpload: File[] = [];
+  proyectoForm: FormGroup;
 
-  veredas$: Observable<Vereda[]> = this.veredaService.getAll();
+  // Propiedades para la gestión de imágenes del proyecto
+  existingPhotos: string[] = [];
+  newFilesToUpload: File[] = [];
+  photosToDelete: string[] = [];
+  newFilesPreviewUrls: string[] = [];
+  
+  private _proyecto?: Proyecto;
+  veredasList: Vereda[] = [];
 
-form = this.fb.nonNullable.group({
-  nombre:        ['', Validators.required],
-  descripcion:   ['', Validators.required],
-  veredas:       this.fb.nonNullable.control<string[]>([], Validators.required),
-  estado:        this.fb.nonNullable.control<'En ejecución'|'Finalizado'|'Suspendido'>('En ejecución', Validators.required),
-  anioInicio:    this.fb.nonNullable.control<number>(new Date().getFullYear(), Validators.required),
-  anioFin:       this.fb.control<number | null>(null),   // este sí admite null
-  fotos:         this.fb.nonNullable.control<string[]>([]),
-});
+  // Evento emitido al guardar correctamente el formulario
+  @Output() formSaved = new EventEmitter<void>();
 
-  static commonModule: readonly any[] | Type<any>;
-  isEdit: any;
+  // Setter para recibir el proyecto a editar. Al cambiar, se actualiza el formulario y el estado de imágenes.
+  @Input() set proyecto(valor: Proyecto | undefined) {
+    this._proyecto = valor;
+    this.resetImageState();
 
-  ngOnInit() {
-    if (this.proyecto) {
-      const { anioFin, ...rest } = this.proyecto;
-      this.form.patchValue({
-        ...rest,
-        anioFin: typeof anioFin === 'number' ? null : anioFin ?? null,
-      });
-    }
-  }
-
-  cancel() {
-    this.cancelled.emit();
-  }
-
-  async submit() {
-    if (this.form.invalid) {
-      return;
-    }
-
-    // Datos base
-    const user = await firstValueFrom(this.auth.user$);
-    const base: Proyecto = {
-      ...this.form.getRawValue(),
-      creadoPor: user?.email ?? null,
-      fechaCreacion: new Date(),
-      fotos: [], // aún sin URLs
-    };
-
-    // 1️⃣ Crea (o actualiza) sin fotos y obtén el id
-    const id =
-      this.proyecto?.id ?? doc(collection(this.firestore, 'proyectos')).id;
-
-    if (this.proyecto?.id) {
-      await this.svc.update(id, base);
+    if (this._proyecto) {
+      this.proyectoForm.patchValue(this._proyecto);
+      this.existingPhotos = this._proyecto.fotos || [];
     } else {
-      await this.svc.createWithId(id, base); // adapta tu servicio para admitir id externo
-    }
-
-    // 2️⃣ Sube imágenes si las hay
-    if (this.filesToUpload.length) {
-      const uploadPromises = this.filesToUpload.map(async (file) => {
-        const path = `proyectos/${id}/${Date.now()}_${file.name}`;
-        const storageRef = ref(this.storage, path);
-        await uploadBytes(storageRef, file);
-        return getDownloadURL(storageRef); // ← URL pública
+      this.proyectoForm.reset({
+        estado: 'En ejecución',
+        anioInicio: new Date().getFullYear(),
       });
-
-      const urls = await Promise.all(uploadPromises);
-
-      // 3️⃣ Actualiza el documento con las URLs
-      await this.svc.update(id, { fotos: urls });
     }
-
-    this.saved.emit();
   }
 
-  onFilesSelected(evt: Event) {
-    const files = (evt.target as HTMLInputElement).files;
-    if (!files?.length) {
+  get proyecto(): Proyecto | undefined {
+    return this._proyecto;
+  }
+
+  constructor() {
+    // Inicialización del formulario reactivo con validaciones
+    this.proyectoForm = this.fb.group({
+      nombre: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      veredas: [[], Validators.required],
+      estado: ['En ejecución', Validators.required],
+      anioInicio: [new Date().getFullYear(), Validators.required],
+      anioFin: [null],
+      // Las imágenes se gestionan por separado
+    });
+  }
+
+  ngOnInit(): void {
+    // Carga las veredas para el selector al inicializar el componente
+    this.veredaSvc.getAll().subscribe((arr) => {
+      this.veredasList = arr;
+    });
+  }
+
+  /**
+   * Maneja la selección de archivos para previsualizarlos y almacenarlos temporalmente.
+   */
+  onFileSelected(event: any): void {
+    const files = event.target.files;
+    if (files.length > 0) {
+      const newFiles = Array.from<File>(files);
+      this.newFilesToUpload.push(...newFiles);
+
+      // Genera las URLs de previsualización de los nuevos archivos
+      newFiles.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.newFilesPreviewUrls.push(e.target.result);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  }
+
+  /**
+   * Marca una foto existente para ser eliminada y la remueve de la previsualización.
+   */
+  markPhotoForDeletion(url: string): void {
+    this.photosToDelete.push(url);
+    this.existingPhotos = this.existingPhotos.filter(photo => photo !== url);
+  }
+
+  /**
+   * Elimina una imagen nueva seleccionada antes de subirla.
+   */
+  removeNewFile(index: number): void {
+    this.newFilesToUpload.splice(index, 1);
+    this.newFilesPreviewUrls.splice(index, 1);
+  }
+
+  /**
+   * Envía el formulario para crear o actualizar un proyecto.
+   * Incluye la gestión de imágenes (subida/eliminación) y muestra feedback visual.
+   */
+  async onSubmit(): Promise<void> {
+    if (this.proyectoForm.invalid) {
+      this.proyectoForm.markAllAsTouched();
       return;
     }
+    this.loaderSvc.show();
 
-    // Guarda los archivos en memoria hasta que el usuario pulse "Guardar"
-    this.filesToUpload.push(...Array.from(files));
+    try {
+      const proyectoId = this.proyecto?.id;
+      let successMessage = '';
 
-    // Pre-views (opcional)
-    Array.from(files).forEach((f) => {
-      const reader = new FileReader();
-      reader.onload = (e) => this.previewUrls.push(e.target?.result as string);
-      reader.readAsDataURL(f);
+      if (proyectoId) {
+        // Actualiza un proyecto existente, gestionando imágenes nuevas y eliminadas
+        const deletePromises = this.photosToDelete.map(url => this.proyectoSvc.deletePhoto(url));
+        await Promise.all(deletePromises);
+
+        const newPhotoURLs = await this.proyectoSvc.uploadPhotos(proyectoId, this.newFilesToUpload);
+        const updatedPhotos = [...this.existingPhotos, ...newPhotoURLs];
+
+        await this.proyectoSvc.update(proyectoId, {
+          ...this.proyectoForm.value,
+          fotos: updatedPhotos,
+        });
+        successMessage = '¡Proyecto actualizado con éxito!';
+      } else {
+        // Crea un nuevo proyecto, registrando quién y cuándo lo creó
+        const proyectoData: Omit<Proyecto, 'id'> = {
+          ...this.proyectoForm.value,
+          creadoPor: this.authSvc.getCurrentUser()?.email,
+          fechaCreacion: new Date(),
+          fotos: [],
+        };
+
+        const docRef = await this.proyectoSvc.createWithId(proyectoData);
+        const photoURLs = await this.proyectoSvc.uploadPhotos(docRef.id, this.newFilesToUpload);
+        await this.proyectoSvc.update(docRef.id, { fotos: photoURLs });
+
+        successMessage = '¡Proyecto creado con éxito!';
+      }
+
+      // Muestra notificación de éxito
+      Swal.fire({
+        icon: 'success',
+        title: successMessage,
+        showConfirmButton: false,
+        timer: 1500
+      });
+
+      // Notifica al componente padre y resetea el formulario
+      this.formSaved.emit();
+      this.loaderSvc.hide();
+      this.resetFormState();
+
+    } catch (error) {
+      // Manejo de errores en la operación de guardado
+      this.loaderSvc.hide();
+      console.error('Error al guardar el proyecto:', error);
+      Swal.fire({ icon: 'error', title: '¡Oops!', text: 'Ocurrió un error al guardar el proyecto.' });
+    }
+  }
+
+  /**
+   * Resetea el estado de las imágenes al cambiar de proyecto o limpiar el formulario.
+   */
+  private resetImageState(): void {
+    this.existingPhotos = [];
+    this.newFilesToUpload = [];
+    this.photosToDelete = [];
+    this.newFilesPreviewUrls = [];
+  }
+
+  /**
+   * Resetea el formulario a los valores por defecto y limpia las imágenes.
+   */
+  private resetFormState(): void {
+    this.proyectoForm.reset({
+      estado: 'En ejecución',
+      anioInicio: new Date().getFullYear(),
     });
+    this.resetImageState();
   }
 }

@@ -11,10 +11,10 @@ import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { map, Observable } from 'rxjs';
 
-import { ProyectoService, Proyecto } from '../proyecto.service';
+import { ProyectoService, Proyecto } from '../../../core/services/proyecto.service';
 import { ProyectoForm } from '../proyecto-form/proyecto-form';
 import { Modal } from 'bootstrap';
-import { Vereda, VeredaService } from '../vereda.service';
+import { Vereda, VeredaService } from '../../../core/services/vereda.service';
 
 @Component({
   selector: 'proyecto-list',
@@ -40,7 +40,7 @@ export class ProyectoList implements AfterViewInit {
   private veredaSvc = inject(VeredaService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-
+  formSaved :boolean = false;
   constructor() {
     this.proyectos$ = this.proyectoSvc.getAll().pipe(
       map(proyectos => proyectos.map(p => {
@@ -69,6 +69,8 @@ export class ProyectoList implements AfterViewInit {
 
   /** Abre modal para nuevo o edición */
   openModal(proy?: Proyecto) {
+    console.log("proy", proy);
+    
     this.selected = proy;
     this.modalInstance.show();
   }
@@ -87,6 +89,9 @@ export class ProyectoList implements AfterViewInit {
   /** Acción de editar desde la tabla */
   editar(id: string) {
     this.proyectoSvc.getOne(id).subscribe((p) => {
+      console.log("id", id);
+      console.log("getOne", p);
+      
       this.openModal(p);
     });
   }
@@ -96,6 +101,7 @@ export class ProyectoList implements AfterViewInit {
     this.proyectoSvc.delete(id);
   }
   getVeredaName(id: string): string {
+
     return this.veredasList.find((v) => v.id === id)?.name || id;
   }
   getVeredasDisplay(veredas?: string[]): string {

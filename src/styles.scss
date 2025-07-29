@@ -1,5 +1,5 @@
-@import "@ng-select/ng-select/themes/default.theme.css";
-
+@use "@ng-select/ng-select/themes/default.theme.css";
+@use 'sweetalert2/src/sweetalert2.scss';
 
 /* You can add global styles to this file, and also import other style files */
 :root {

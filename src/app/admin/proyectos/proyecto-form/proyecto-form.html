@@ -1,70 +1,78 @@
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">
-            <!-- {{ isEdit ? 'Editar Proyecto' : 'Nuevo Proyecto' }} -->
-        </h5>
-        <form [formGroup]="form" (ngSubmit)="submit()">
-            <div class="mb-3">
-                <label class="form-label">Nombre de la Obra</label>
-                <input type="text" class="form-control" formControlName="nombre">
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Descripción</label>
-                <textarea class="form-control" rows="6" formControlName="descripcion"
-                    placeholder="Describe la obra con todo detalle"></textarea>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Veredas beneficiadas</label>
-
-                <ng-select [items]="veredas$ | async" bindLabel="name" bindValue="id" formControlName="veredas"
-                    [multiple]="true" [closeOnSelect]="false" [searchable]="true"
-                    placeholder="Seleccione una o más veredas" dropdownPosition="bottom">
-                </ng-select>
-
-                <div *ngIf="form.get('veredas')?.invalid && form.get('veredas')?.touched" class="text-danger small">
-                    Selecciona al menos una vereda.
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Estado</label>
-                <select class="form-select" formControlName="estado">
-                    <option>En ejecución</option>
-                    <option>Finalizado</option>
-                    <option>Suspendido</option>
-                </select>
-            </div>
-            <div class="row">
-                <div class="col mb-3">
-                    <label class="form-label">Año Inicio</label>
-                    <input type="number" class="form-control" formControlName="anioInicio">
-                </div>
-                <div class="col mb-3">
-                    <label class="form-label">Año Fin</label>
-                    <input type="number" class="form-control" formControlName="anioFin">
-                </div>
-            </div>
-
-            <!-- Fotos -->
-            <div class="mb-3">
-                <label class="form-label">Fotos (0-∞)</label>
-                <input type="file" class="form-control" accept="image/*" multiple (change)="onFilesSelected($event)" />
-
-                <!-- mini-vistas previas opcionales -->
-                <div class="d-flex flex-wrap gap-2 mt-2" *ngIf="previewUrls.length">
-                    <img *ngFor="let url of previewUrls" [src]="url" class="img-thumbnail"
-                        style="width: 90px; height: 90px; object-fit: cover;" />
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-primary me-2" [disabled]="form.invalid">
-                {{ isEdit ? 'Actualizar' : 'Crear' }}
-            </button>
-            <button type="button" class="btn btn-secondary" (click)="cancel()">
-                Cancelar
-            </button>
-        </form>
+<form [formGroup]="proyectoForm" (ngSubmit)="onSubmit()">
+  <!-- ... (campos de nombre, descripción, etc. se mantienen igual) ... -->
+  <div class="mb-3">
+    <label for="nombre" class="form-label">Nombre de la Obra</label>
+    <input id="nombre" type="text" class="form-control" formControlName="nombre">
+  </div>
+  <div class="mb-3">
+    <label for="descripcion" class="form-label">Descripción</label>
+    <textarea id="descripcion" class="form-control" rows="4" formControlName="descripcion"></textarea>
+  </div>
+  <div class="mb-3">
+    <label for="veredas" class="form-label">Veredas beneficiadas</label>
+    <ng-select id="veredas" [items]="veredasList" bindLabel="name" bindValue="id" formControlName="veredas" [multiple]="true" [closeOnSelect]="false" [searchable]="true"></ng-select>
+  </div>
+  <div class="mb-3">
+    <label for="estado" class="form-label">Estado</label>
+    <select id="estado" class="form-select" formControlName="estado">
+      <option>En ejecución</option>
+      <option>Finalizado</option>
+      <option>Suspendido</option>
+    </select>
+  </div>
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label for="anioInicio" class="form-label">Año Inicio</label>
+      <input id="anioInicio" type="number" class="form-control" formControlName="anioInicio">
     </div>
-</div>
+    <div class="col-md-6 mb-3">
+      <label for="anioFin" class="form-label">Año Fin (Opcional)</label>
+      <input id="anioFin" type="number" class="form-control" formControlName="anioFin">
+    </div>
+  </div>
+
+  <!-- SECCIÓN DE IMÁGENES ACTUALIZADA -->
+  <hr>
+  <div class="mb-3">
+    <h5>Imágenes</h5>
+
+    <!-- Miniaturas de imágenes existentes (solo en modo edición) -->
+    <div *ngIf="proyecto && existingPhotos.length > 0">
+      <p class="small text-muted">Imágenes actuales:</p>
+      <div class="d-flex flex-wrap gap-2">
+        <div *ngFor="let photoUrl of existingPhotos" class="position-relative">
+          <img [src]="photoUrl" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
+          <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0" style="line-height: 1; padding: 0.1rem 0.3rem;" (click)="markPhotoForDeletion(photoUrl)" title="Eliminar imagen">
+            &times;
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✅ NUEVO: Previsualización de nuevas imágenes a subir -->
+    <div *ngIf="newFilesPreviewUrls.length > 0" class="mt-3">
+        <p class="small text-muted">Nuevas imágenes a subir:</p>
+        <div class="d-flex flex-wrap gap-2">
+          <div *ngFor="let previewUrl of newFilesPreviewUrls; let i = index" class="position-relative">
+            <img [src]="previewUrl" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
+            <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0" style="line-height: 1; padding: 0.1rem 0.3rem;" (click)="removeNewFile(i)" title="Quitar imagen">
+              &times;
+            </button>
+          </div>
+        </div>
+      </div>
+
+    <!-- Campo para añadir nuevas fotos -->
+    <div class="mt-3">
+      <label for="fotos" class="form-label">{{ proyecto ? 'Añadir más fotos' : 'Subir fotos' }}</label>
+      <input id="fotos" type="file" class="form-control" accept="image/*" multiple (change)="onFileSelected($event)" />
+    </div>
+  </div>
+  
+  <!-- Botones de Acción -->
+  <div class="d-flex justify-content-end mt-4">
+    <button type="submit" class="btn btn-primary" [disabled]="proyectoForm.invalid">
+      {{ proyecto ? 'Actualizar Proyecto' : 'Crear Proyecto' }}
+    </button>
+  </div>
+</form>
