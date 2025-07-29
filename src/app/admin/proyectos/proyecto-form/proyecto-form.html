@@ -1,0 +1,70 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">
+            <!-- {{ isEdit ? 'Editar Proyecto' : 'Nuevo Proyecto' }} -->
+        </h5>
+        <form [formGroup]="form" (ngSubmit)="submit()">
+            <div class="mb-3">
+                <label class="form-label">Nombre de la Obra</label>
+                <input type="text" class="form-control" formControlName="nombre">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Descripción</label>
+                <textarea class="form-control" rows="6" formControlName="descripcion"
+                    placeholder="Describe la obra con todo detalle"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Veredas beneficiadas</label>
+
+                <ng-select [items]="veredas$ | async" bindLabel="name" bindValue="id" formControlName="veredas"
+                    [multiple]="true" [closeOnSelect]="false" [searchable]="true"
+                    placeholder="Seleccione una o más veredas" dropdownPosition="bottom">
+                </ng-select>
+
+                <div *ngIf="form.get('veredas')?.invalid && form.get('veredas')?.touched" class="text-danger small">
+                    Selecciona al menos una vereda.
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Estado</label>
+                <select class="form-select" formControlName="estado">
+                    <option>En ejecución</option>
+                    <option>Finalizado</option>
+                    <option>Suspendido</option>
+                </select>
+            </div>
+            <div class="row">
+                <div class="col mb-3">
+                    <label class="form-label">Año Inicio</label>
+                    <input type="number" class="form-control" formControlName="anioInicio">
+                </div>
+                <div class="col mb-3">
+                    <label class="form-label">Año Fin</label>
+                    <input type="number" class="form-control" formControlName="anioFin">
+                </div>
+            </div>
+
+            <!-- Fotos -->
+            <div class="mb-3">
+                <label class="form-label">Fotos (0-∞)</label>
+                <input type="file" class="form-control" accept="image/*" multiple (change)="onFilesSelected($event)" />
+
+                <!-- mini-vistas previas opcionales -->
+                <div class="d-flex flex-wrap gap-2 mt-2" *ngIf="previewUrls.length">
+                    <img *ngFor="let url of previewUrls" [src]="url" class="img-thumbnail"
+                        style="width: 90px; height: 90px; object-fit: cover;" />
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary me-2" [disabled]="form.invalid">
+                {{ isEdit ? 'Actualizar' : 'Crear' }}
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="cancel()">
+                Cancelar
+            </button>
+        </form>
+    </div>
+</div>

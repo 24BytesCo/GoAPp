@@ -1,0 +1,21 @@
+[
+  {
+    "origin": [
+      "http://localhost:4200",
+      "https://geoobrasapp.web.app",
+      "https://geoobrasapp.firebaseapp.com"
+    ],
+    "method": ["GET", "HEAD", "PUT", "POST", "DELETE"],
+    "responseHeader": [
+      "Content-Type",
+      "Authorization",
+      "X-Goog-Upload-Protocol",
+      "X-Goog-Upload-Command",
+      "X-Goog-Upload-Content-Type",
+      "X-Goog-Upload-Header-Content-Length",
+      "X-Goog-Upload-Offset",
+      "X-Goog-Upload-URL"
+    ],
+    "maxAgeSeconds": 3600
+  }
+]

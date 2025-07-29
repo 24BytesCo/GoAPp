@@ -1,0 +1,222 @@
+[
+  {
+    "id": "630593aa-80eb-4267-8fb9-725f18e8405e",
+    "name": "Barcino"
+  },
+  {
+    "id": "3a26f338-cfe5-487a-adcf-e222e4052e11",
+    "name": "Cabildo"
+  },
+  {
+    "id": "5519958c-7fc8-485a-a161-274f07cbb3bb",
+    "name": "Candelaria"
+  },
+  {
+    "id": "204960c4-7a93-475d-8ce3-67fc2940e9de",
+    "name": "Chorro Claro"
+  },
+  {
+    "id": "a45f1a2b-fb0d-43a5-b43a-8b5f74e5d0c1",
+    "name": "Corocito"
+  },
+  {
+    "id": "9d2b8f57-0ad8-4b22-9f6f-d2c4f4e8a3b7",
+    "name": "Efe Gómez"
+  },
+  {
+    "id": "3e4a5d29-7eb1-4b80-9e2a-5e5d6f9b1c0d",
+    "name": "El Brasil"
+  },
+  {
+    "id": "c837e252-35e4-4b71-8f13-66f0a0c7ab72",
+    "name": "El Carmen"
+  },
+  {
+    "id": "124b8abd-3b42-450e-8efa-4a29f1ce3d2f",
+    "name": "El Diamante"
+  },
+  {
+    "id": "5e4fda16-2f84-4e46-bcd2-9c7c1f2e89ab",
+    "name": "El Diluvio"
+  },
+  {
+    "id": "9e1c2d35-5c68-4f92-9bde-2d5c0e7f3a9b",
+    "name": "El Iris"
+  },
+  {
+    "id": "7b3d1f22-8e4a-4a1f-9c6d-0f1ec5a7d2b3",
+    "name": "El Píramo"
+  },
+  {
+    "id": "2c8f6e45-1a7b-4d8f-9b1a-3d5c2e1f7f0a",
+    "name": "El Porvenir"
+  },
+  {
+    "id": "f0a1b2c3-d4e5-6789-abcd-ef0123456789",
+    "name": "El Táchira"
+  },
+  {
+    "id": "e1f2a3b4-c5d6-7890-abcd-ef1234567890",
+    "name": "El Vesubio"
+  },
+  {
+    "id": "456789ab-cdef-0123-4567-89abcdef0123",
+    "name": "Encarnaciones"
+  },
+  {
+    "id": "89abcdef-0123-4567-89ab-cdef01234567",
+    "name": "Frailes"
+  },
+  {
+    "id": "01234567-89ab-cdef-0123-456789abcdef",
+    "name": "Guacas Abajo"
+  },
+  {
+    "id": "abcdef01-2345-6789-abcd-ef0123456789",
+    "name": "Guacas Arriba"
+  },
+  {
+    "id": "23456789-abcd-ef01-2345-6789abcdef01",
+    "name": "Jardín"
+  },
+  {
+    "id": "3456789a-bcde-f012-3456-789abcdef012",
+    "name": "La Bella"
+  },
+  {
+    "id": "456789ab-cdef-0123-4567-89abcdef0123",
+    "name": "La Ceiba"
+  },
+  {
+    "id": "56789abc-def0-1234-5678-9abcdef01234",
+    "name": "La Chinca"
+  },
+  {
+    "id": "6789abcd-ef01-2345-6789-abcdef012345",
+    "name": "La Floresta"
+  },
+  {
+    "id": "789abcde-f012-3456-789a-bcdef0123456",
+    "name": "La Florida"
+  },
+  {
+    "id": "89abcdef-0123-4567-89ab-cdef01234567",
+    "name": "La Gómez"
+  },
+  {
+    "id": "90abcdef-1234-5678-9abc-def012345678",
+    "name": "La Guzmana"
+  },
+  {
+    "id": "abcdef90-1234-5678-9abc-def012345678",
+    "name": "La Inmaculada"
+  },
+  {
+    "id": "bcdef012-3456-789a-bcde-f0123456789a",
+    "name": "La Jota"
+  },
+  {
+    "id": "cdef0123-4567-89ab-cdef-0123456789ab",
+    "name": "La Linda"
+  },
+  {
+    "id": "def01234-5678-9abc-def0-123456789abc",
+    "name": "La María"
+  },
+  {
+    "id": "ef012345-6789-abcd-ef01-23456789abcd",
+    "name": "La Mora"
+  },
+  {
+    "id": "f0123456-789a-bcde-f012-3456789abcde",
+    "name": "La Pureza"
+  },
+  {
+    "id": "01234567-89ab-cdef-0123-456789abcdef",
+    "name": "La Trinidad"
+  },
+  {
+    "id": "12345678-9abc-def0-1234-56789abcdef0",
+    "name": "Manizales"
+  },
+  {
+    "id": "23456789-abcd-ef01-2345-6789abcdef01",
+    "name": "Marbella"
+  },
+  {
+    "id": "3456789a-bcde-f012-3456-789abcdef012",
+    "name": "Montemar"
+  },
+  {
+    "id": "456789ab-cdef-0123-4567-89abcdef0123",
+    "name": "Mulatal"
+  },
+  {
+    "id": "56789abc-def0-1234-5678-9abcdef01234",
+    "name": "Nusito"
+  },
+  {
+    "id": "6789abcd-ef01-2345-6789-abcdef012345",
+    "name": "Palmas"
+  },
+  {
+    "id": "789abcde-f012-3456-789a-bcdef0123456",
+    "name": "Patio Bonito"
+  },
+  {
+    "id": "89abcdef-0123-4567-89ab-cdef01234567",
+    "name": "Peñas Azules"
+  },
+  {
+    "id": "90abcdef-1234-5678-9abc-def012345678",
+    "name": "Playa Rica"
+  },
+  {
+    "id": "abcdef01-2345-6789-abcd-ef0123456789",
+    "name": "Quiebrahonda"
+  },
+  {
+    "id": "bcdef012-3456-789a-bcde-f0123456789a",
+    "name": "San Antonio"
+  },
+  {
+    "id": "cdef0123-4567-89ab-cdef-0123456789ab",
+    "name": "San Javier"
+  },
+  {
+    "id": "def01234-5678-9abc-def0-123456789abc",
+    "name": "San Joaquín"
+  },
+  {
+    "id": "ef012345-6789-abcd-ef01-23456789abcd",
+    "name": "San José del Nare"
+  },
+  {
+    "id": "f0123456-789a-bcde-f012-3456789abcde",
+    "name": "San Juan"
+  },
+  {
+    "id": "01234567-89ab-cdef-0123-456789abcdef",
+    "name": "San Matías"
+  },
+  {
+    "id": "12345678-9abc-def0-1234-56789abcdef0",
+    "name": "San Pablo"
+  },
+  {
+    "id": "23456789-abcd-ef01-2345-6789abcdef01",
+    "name": "Santa Bárbara"
+  },
+  {
+    "id": "9fc4f569-3af2-44db-9130-425b3c8b8888",
+    "name": "Santa Isabel"
+  },
+  {
+    "id": "41de5922-edcb-4f5f-b0cc-5ca9a249c837",
+    "name": "Santa Teresa (A)"
+  },
+  {
+    "id": "f94f074a-b9ec-426e-893b-19f319d63886",
+    "name": "Santa Teresa (B)"
+  }
+]

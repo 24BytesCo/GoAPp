@@ -1,1 +1,14 @@
+@import "@ng-select/ng-select/themes/default.theme.css";
+
+
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --color-primary:       #1976D2;
+  --color-primary-light: #BBDEFB;
+  --color-primary-dark:  #0D47A1;
+  --color-accent:        #FFC107;
+  --color-neutral-light:#F5F5F5;
+  --color-neutral-dark: #455A64;
+  --color-text:          #212121;
+  --color-text-inverse:  #FFFFFF;
+}
