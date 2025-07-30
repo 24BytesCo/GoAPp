@@ -12,3 +12,40 @@
   --color-text:          #212121;
   --color-text-inverse:  #FFFFFF;
 }
+
+@media (max-width: 576px) {
+  table th:nth-child(4),
+  table td:nth-child(4), /* Año Inicio */
+  table th:nth-child(5),
+  table td:nth-child(5), /* Año Fin */
+  table th:nth-child(6),
+  table td:nth-child(6), /* Creado por */
+  table th:nth-child(7),
+  table td:nth-child(7)  /* Fecha creación */
+  {
+    display: none;
+  }
+  .table th, .table td {
+    font-size: 0.95rem;
+    padding: 0.4rem;
+  }
+}
+@media (max-width: 700px) {
+  .table .btn {
+    width: 100%;
+    margin-bottom: 0.3rem;
+  }
+  .table .btn + .btn {
+    margin-left: 0 !important;
+  }
+}
+
+@media (max-width: 1200px) {
+  .table .btn {
+    width: 100%;
+    margin-bottom: 0.3rem;
+  }
+  .table .btn + .btn {
+    margin-left: 0 !important;
+  }
+}

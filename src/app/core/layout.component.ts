@@ -16,9 +16,9 @@ import { Loader } from "../shared/loader/loader";
   template: `
     <app-loader></app-loader>
     <app-header></app-header>
-    <main class="container my-4">
-      <router-outlet></router-outlet>
-    </main>
+<main class="container-fluid my-4" style="padding-left: 30px; padding-right: 30px;">
+  <router-outlet></router-outlet>
+</main>
   `,
   styles: []
 })
@@ -32,7 +32,7 @@ export class LayoutComponent {
   /**
    * Cierra la sesión del usuario.
    */
-  logout() { 
-    this.auth.logout(); 
+  logout() {
+    this.auth.logout();
   }
 }

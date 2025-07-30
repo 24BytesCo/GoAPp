@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -198,4 +198,8 @@ export class ProyectoForm implements OnInit {
     });
     this.resetImageState();
   }
+
+  resetForm() {
+  this.proyectoForm.reset(); // asumiendo que tienes un FormGroup llamado 'form'
+}
 }

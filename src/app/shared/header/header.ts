@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule, AsyncPipe } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 
 /**
@@ -17,6 +17,7 @@ import { AuthService } from '../../core/services/auth.service';
 export class HeaderComponent {
   // Servicio de autenticación inyectado
   private auth = inject(AuthService);
+  public router = inject(Router);
 
   // Observable del usuario autenticado
   user$ = this.auth.user$;
@@ -28,5 +29,9 @@ export class HeaderComponent {
     this.auth.logout(); 
     console.log('User logged out');
     this.auth.redirectAfterLogout();
+  }
+
+  login(){
+    this.router.navigate(['/auth']);
   }
 }

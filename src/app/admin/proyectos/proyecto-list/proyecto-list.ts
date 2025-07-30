@@ -6,10 +6,12 @@ import {
   ViewChild,
   ElementRef,
   inject,
+  OnInit,
+  OnDestroy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { map, Observable, Subscription } from 'rxjs';
 
 import { ProyectoService, Proyecto } from '../../../core/services/proyecto.service';
 import { ProyectoForm } from '../proyecto-form/proyecto-form';
@@ -23,15 +25,16 @@ import { Vereda, VeredaService } from '../../../core/services/vereda.service';
   templateUrl: './proyecto-list.html',
   styleUrls: ['./proyecto-list.scss'],
 })
-export class ProyectoList implements AfterViewInit {
+export class ProyectoList implements AfterViewInit, OnDestroy {
   /** Stream de proyectos desde Firestore */
   proyectos$!: Observable<Proyecto[]>;
-
+  private editSub?: Subscription;
   /** Proyecto seleccionado para edición */
   selected?: Proyecto;
 
   /** Referencia al elemento modal de Bootstrap */
   @ViewChild('projectModal', { static: true }) modalEl!: ElementRef;
+
   private modalInstance!: any;
   veredasList: Vereda[] = [];
 
@@ -40,7 +43,7 @@ export class ProyectoList implements AfterViewInit {
   private veredaSvc = inject(VeredaService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  formSaved :boolean = false;
+  formSaved: boolean = false;
   constructor() {
     this.proyectos$ = this.proyectoSvc.getAll().pipe(
       map(proyectos => proyectos.map(p => {
@@ -70,7 +73,7 @@ export class ProyectoList implements AfterViewInit {
   /** Abre modal para nuevo o edición */
   openModal(proy?: Proyecto) {
     console.log("proy", proy);
-    
+
     this.selected = proy;
     this.modalInstance.show();
   }
@@ -86,12 +89,9 @@ export class ProyectoList implements AfterViewInit {
     // La lista se refresca automáticamente (Firestore emite cambios en tiempo real)
   }
 
-  /** Acción de editar desde la tabla */
   editar(id: string) {
-    this.proyectoSvc.getOne(id).subscribe((p) => {
-      console.log("id", id);
-      console.log("getOne", p);
-      
+    // Si ya hay una suscripción previa, la destruimos
+    this.editSub = this.proyectoSvc.getOne(id).subscribe((p) => {
       this.openModal(p);
     });
   }
@@ -109,4 +109,9 @@ export class ProyectoList implements AfterViewInit {
     if (!veredas || !Array.isArray(veredas)) return '';
     return veredas.map((id) => this.getVeredaName(id)).join(', ');
   }
+
+  ngOnDestroy() {
+    this.editSub?.unsubscribe();
+  }
+
 }

@@ -42,3 +42,33 @@ testem.log
 Thumbs.db
 # Credenciales sensibles
 serviceAccountKey.json
+# Node
+node_modules/
+npm-debug.log*
+
+# Compiled output
+dist/
+out-tsc/
+.tmp/
+.sass-cache/
+
+# Firebase
+.firebase/
+firebase-debug.log
+
+# Angular environment files
+src/environments/environment*.ts
+
+# IDEs and OS
+.DS_Store
+*.swp
+*.swo
+*.bak
+*.tmp
+.vscode/
+.idea/
+*.iml
+
+# Misc
+*.local
+.env
