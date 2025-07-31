@@ -1,5 +1,39 @@
-@use "@ng-select/ng-select/themes/default.theme.css";
-@use 'sweetalert2/src/sweetalert2.scss';
+/* ──────────────────────────────
+   src/styles.scss
+──────────────────────────────── */
+
+/* 1️⃣  Módulos SCSS (deben ir primero) */
+@use '@angular/material' as mat;
+@use 'sweetalert2/src/sweetalert2.scss' as *;
+
+/* 2️⃣  CSS puro (puede ir luego) */
+@import "@ng-select/ng-select/themes/default.theme.css";
+
+/* 3️⃣  Reglas y theming */
+html {
+  @include mat.theme((
+    color: (
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+body {
+  /* Tema claro por defecto */
+  color-scheme: light;
+
+  /* Variables de Angular Material */
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  /* Reset del margin UA */
+  margin: 0;
+}
+
 
 /* You can add global styles to this file, and also import other style files */
 :root {
@@ -38,14 +72,8 @@
   .table .btn + .btn {
     margin-left: 0 !important;
   }
+  
 }
 
-@media (max-width: 1200px) {
-  .table .btn {
-    width: 100%;
-    margin-bottom: 0.3rem;
-  }
-  .table .btn + .btn {
-    margin-left: 0 !important;
-  }
-}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

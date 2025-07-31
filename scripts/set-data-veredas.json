@@ -55,5 +55,8 @@
   { "id": "41de5922-edcb-4f5f-b0cc-5ca9a249c837", "name": "Santa Teresa (A)" },
   { "id": "f94f074a-b9ec-426e-893b-19f319d63886", "name": "Santa Teresa (B)" },
   { "id": "2fd82039-9468-41f2-8fc1-0c2f7d11b93a", "name": "Cristales" },
-  { "id": "c75e7e3f-1a41-47f5-8f0b-07a847eb8fd2", "name": "Villanueva" }
+  { "id": "c75e7e3f-1a41-47f5-8f0b-07a847eb8fd2", "name": "Villanueva" },
+  { "id": "3766894e-2d1d-4ee1-b464-0464282b9466", "name": "Zona urbana" },
+  { "id": "fd7d55b7-9092-416e-bf36-ff90fee150fd", "name": "San José del Nus" },
+  { "id": "28cb8150-3ab4-4ab5-848d-13f9c8a28d69", "name": "Providencia" }
 ]

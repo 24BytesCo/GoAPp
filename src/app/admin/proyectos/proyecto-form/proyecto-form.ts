@@ -30,12 +30,13 @@ export class ProyectoForm implements OnInit {
   newFilesToUpload: File[] = [];
   photosToDelete: string[] = [];
   newFilesPreviewUrls: string[] = [];
-  
+
   private _proyecto?: Proyecto;
   veredasList: Vereda[] = [];
 
   // Evento emitido al guardar correctamente el formulario
   @Output() formSaved = new EventEmitter<void>();
+  @ViewChild('fotos') fileInput!: ElementRef<HTMLInputElement>;
 
   // Setter para recibir el proyecto a editar. Al cambiar, se actualiza el formulario y el estado de imágenes.
   @Input() set proyecto(valor: Proyecto | undefined) {
@@ -71,9 +72,12 @@ export class ProyectoForm implements OnInit {
   }
 
   ngOnInit(): void {
+    this.resetFormState();
     // Carga las veredas para el selector al inicializar el componente
     this.veredaSvc.getAll().subscribe((arr) => {
       this.veredasList = arr;
+      console.log("this.veredasList", this.veredasList);
+
     });
   }
 
@@ -197,9 +201,20 @@ export class ProyectoForm implements OnInit {
       anioInicio: new Date().getFullYear(),
     });
     this.resetImageState();
+    this.resetFileInput();
   }
 
   resetForm() {
-  this.proyectoForm.reset(); // asumiendo que tienes un FormGroup llamado 'form'
-}
+    this.proyectoForm.reset();
+  }
+
+  resetFileInput(): void {
+    console.log("antes de resetear");
+    
+    if (this.fileInput?.nativeElement) {
+      console.log("reseteando");
+      
+      this.fileInput.nativeElement.value = '';
+    }
+  }
 }
