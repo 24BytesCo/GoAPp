@@ -23,6 +23,10 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog'; // <-- AÑADIDO
+
+/* Componente de diálogo para veredas */
+import { VeredasDialog } from '../veredas-dialog/veredas-dialog';
 
 @Component({
   selector: 'proyecto-list',
@@ -37,8 +41,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatSortModule,
     MatInputModule,
     MatFormFieldModule,
-    ProyectoForm
-],
+    ProyectoForm,
+    MatDialogModule, 
+    VeredasDialog, 
+  ],
 })
 export class ProyectoList implements AfterViewInit, OnDestroy {
   /* --------- Material table --------- */
@@ -72,47 +78,37 @@ export class ProyectoList implements AfterViewInit, OnDestroy {
   private proyectoSvc = inject(ProyectoService);
   private veredaSvc = inject(VeredaService);
   private router = inject(Router);
+  public dialog = inject(MatDialog); // <-- AÑADIDO
 
   constructor() {
-    /* 1. Stream para otras partes que sigan usando | async */
     this.proyectos$ = this.proyectoSvc.getAll().pipe(
       map(arr =>
         arr.map(p => ({
           ...p,
-          /* normalizo Timestamp → Date para evitar errores de pipes */
           fechaCreacion:
             (p as any).fechaCreacion &&
-              typeof (p as any).fechaCreacion.toDate === 'function'
+            typeof (p as any).fechaCreacion.toDate === 'function'
               ? (p as any).fechaCreacion.toDate()
               : p.fechaCreacion,
         }))
       )
     );
-
-    /* 2. Listado de veredas para mostrar nombres legibles */
     this.veredaSvc.getAll().subscribe(v => (this.veredasList = v));
   }
 
   ngAfterViewInit(): void {
-    /* Modal Bootstrap */
     this.modalInstance = new Modal(this.modalEl.nativeElement);
-
-    /* ✅  Usa el stream que YA normaliza fechaCreacion */
     this.proyectos$.subscribe(proyectos => {
-      this.dataSource.data = proyectos;        // ← ahora son Date válidos
+      this.dataSource.data = proyectos;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
 
-    /* Filtro global */
     this.dataSource.filterPredicate = (p, txt) => {
       const term = txt.trim().toLowerCase();
-
-      /* 🔑 convierte ids → nombres */
       const veredasTexto = (p.veredas ?? [])
         .map(id => this.getVeredaName(id).toLowerCase())
         .join(' ');
-
       return (
         (p.nombre?.toLowerCase().includes(term) ?? false) ||
         veredasTexto.includes(term) ||
@@ -121,8 +117,7 @@ export class ProyectoList implements AfterViewInit, OnDestroy {
       );
     };
   }
-
-  /* ⬇ ahora recibe el texto directo, no el evento */
+  
   applyFilter(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
     this.dataSource.paginator?.firstPage();
@@ -132,11 +127,11 @@ export class ProyectoList implements AfterViewInit, OnDestroy {
     this.editSub?.unsubscribe();
   }
 
-
   getVeredaName(id: string): string {
     return this.veredasList.find(v => v.id === id)?.name || id;
   }
 
+  // Esta función ya no es necesaria, pero no hace daño dejarla
   getVeredasDisplay(ids?: string[]): string {
     if (!ids?.length) return '';
     return ids.map(this.getVeredaName.bind(this)).join(', ');
@@ -155,7 +150,6 @@ export class ProyectoList implements AfterViewInit, OnDestroy {
   }
 
   onSaved(): void {
-    /* el modal se cierra desde el hijo → refresco en tiempo real */
     this.closeModal();
   }
 
@@ -166,5 +160,21 @@ export class ProyectoList implements AfterViewInit, OnDestroy {
 
   eliminar(id: string): void {
     this.proyectoSvc.delete(id);
+  }
+
+  /**
+   * Abre un diálogo modal para mostrar la lista completa de veredas.
+   * @param veredas - El arreglo completo de IDs de las veredas.
+   * @param projectName - El nombre del proyecto para mostrarlo en el título.
+   */
+  verVeredas(veredas: string[], projectName: string): void {
+    this.dialog.open(VeredasDialog, {
+      width: '450px',
+      data: {
+        projectName: projectName,
+        // Usamos tu función getVeredaName para pasar la lista de nombres
+        veredas: veredas.map(v => this.getVeredaName(v)) 
+      }
+    });
   }
 }

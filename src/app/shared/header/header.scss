@@ -1,40 +1,127 @@
-.toolbar {
+// src/app/shared/header/header.scss
+
+// Usamos el selector :host para aplicar estilos al componente anfitrión.
+:host .navbar {
+  // Un fondo gris muy claro para diferenciar la barra sutilmente.
+  background-color: #f8f9fa !important;
+
+  // Una sombra suave para darle profundidad y un toque profesional.
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  // Aumentamos el padding para que no se sienta tan apretada.
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+// Estilo para el nombre de la marca/logo.
+:host .navbar-brand {
+  font-size: 1.5rem;
+  color: #343a40; // Un gris oscuro para el texto.
+}
+
+// Estilo para el botón de "Salir".
+:host .btn-outline-secondary {
+  // Asegura que los bordes y el texto tengan un color definido.
+  border-color: #6c757d;
+  color: #6c757d;
+
+  // Efecto de transición suave al pasar el cursor.
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #6c757d;
+    color: #ffffff;
+  }
+}
+
+// Estilos que ya tenías para la barra de navegación
+:host .navbar {
+  background-color: #f8f9fa !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding-top: 0.5rem; // Ajustado para el logo
+  padding-bottom: 0.5rem; // Ajustado para el logo
+}
+
+// ... otros estilos que tenías ...
+
+// INICIO DE NUEVO ESTILO: Para la imagen del logo
+:host .logo-img {
+  // Define una altura máxima para que el logo no sea demasiado grande
+  max-height: 70px;
+  width: auto; // Mantiene la proporción del logo
+}
+
+// FIN DE NUEVO ESTILO
+
+// INICIO DE NUEVO ESTILO: Botón de ícono para Salir
+:host .btn-icon-logout {
+  background-color: transparent;
+  border: none;
+  border-radius: 50%; // Lo hace perfectamente circular
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
-  padding: 0.5rem 1rem;
-  background-color: var(--color-primary);
-  color: var(--text-inverse);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  margin-right: 20px;
 
-  .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-decoration: none;
-    color: inherit;
+  // Estilo del ícono dentro del botón
+  .material-icons {
+    color: #6c757d; // Un gris sutil para el ícono
+    font-size: 24px;
   }
 
-  .spacer {
-    flex: 1;
+  // Efecto al pasar el cursor por encima
+  &:hover {
+    background-color: #e9ecef; // Un fondo gris muy claro al pasar el mouse
+  }
+}
+
+// FIN DE NUEVO ESTILO
+
+:host .navbar {
+  // Mantenemos el fondo claro y la sombra que ya teníamos
+  background-color: #ffffff !important; // Fondo blanco puro para mayor contraste
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  // LA MAGIA ESTÁ AQUÍ: Un borde superior con el color de tu marca
+  border-top: 4px solid #0d6efd;
+}
+
+// Estilos del logo y botón de ícono que ya tenías (se mantienen igual)
+:host .logo-img {
+  max-height: 40px;
+  width: auto;
+}
+
+:host .btn-icon-logout {
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+
+  .material-icons {
+    color: #6c757d;
+    font-size: 24px;
   }
 
-  .username {
-    margin-right: 1rem;
-    font-weight: 500;
+  &:hover {
+    background-color: #f1f3f5;
   }
+}
 
-  a, button {
-    border: none;
-    background: none;
-    color: inherit;
-    font-weight: 500;
-    cursor: pointer;
-    text-decoration: none;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    transition: background 0.2s;
-  }
-
-  a:hover, button:hover {
-    background-color: rgba(255,255,255,0.2);
-  }
+:host .navbar {
+background-color: #ffffff !important;
+    border-top: 4px solid #283593;
+    box-shadow: 0 3px 8px rgb(0 0 0 / 9%);
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
 }

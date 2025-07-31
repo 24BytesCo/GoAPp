@@ -1,88 +1,86 @@
-<!-- src/app/admin/proyectos/proyecto-list/proyecto-list.component.html -->
-
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <h1 class="h3 mb-0">Gestión de Proyectos</h1>
-  <button class="btn btn-primary" (click)="openModal()">+ Nuevo Proyecto</button>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0 text-gray-800">Gestión de Proyectos</h1>
 </div>
 
-<mat-form-field appearance="outline" class="w-100 mb-3">
-  <mat-label>Buscar (nombre, vereda, año…)</mat-label>
-  <input matInput #search placeholder="Ej: San Joaquín" (keyup)="applyFilter(search.value)" />
-</mat-form-field>
+<button class="btn btn-primary btn-fab" (click)="openModal()" title="Crear Nuevo Proyecto">
+  <i class="material-icons">add</i>
+</button>
 
-<!-- Tabla paginada -->
-<div class="table-responsive">
-  <table mat-table [dataSource]="dataSource" matSort class="table align-middle custom-table" style="zoom: 0.9;">
+<div class="card shadow-sm">
+  <div class="card-body">
+    <mat-form-field appearance="outline" class="w-100 mb-4">
+      <mat-label>Buscar (nombre, vereda, año…)</mat-label>
+      <input matInput #search placeholder="Ej: Brigadas de salud" (keyup)="applyFilter(search.value)" />
+    </mat-form-field>
 
-    <!-- Nombre -->
-    <ng-container matColumnDef="nombre">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-blue">Nombre</th>
-      <td mat-cell *matCellDef="let p">{{ p.nombre }}</td>
-    </ng-container>
-
-    <!-- Veredas -->
-    <ng-container matColumnDef="veredas">
-      <th mat-header-cell *matHeaderCellDef class="header-blue">Veredas</th>
-      <td mat-cell *matCellDef="let p">
-        <ng-container *ngFor="let v of p.veredas">
-          <span class="vereda-chip">{{ getVeredaName(v) }}</span>
+    <div class="table-responsive" style="zoom: 0.9;">
+      <table mat-table [dataSource]="dataSource" matSort class="custom-table">
+        
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+          <td mat-cell *matCellDef="let p">{{ p.nombre }}</td>
         </ng-container>
-      </td>
-    </ng-container>
 
-    <!-- Estado -->
-    <ng-container matColumnDef="estado">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-blue">Estado</th>
-      <td mat-cell *matCellDef="let p">
-        <span [ngClass]="{
-          'estado-activo': p.estado === 'Finalizado',
-          'estado-ejecucion': p.estado === 'En ejecución',
-          'estado-suspendido': p.estado === 'Suspendido'
-        }">
-          {{ p.estado }}
-        </span>
-      </td>
-    </ng-container>
+        <ng-container matColumnDef="veredas">
+          <th mat-header-cell *matHeaderCellDef>Veredas</th>
+          <td mat-cell *matCellDef="let p">
+            <div class="veredas-container-flex">
+              <ng-container *ngFor="let v of p.veredas | slice:0:3">
+                <span class="vereda-chip">{{ getVeredaName(v?.toString() ?? '') }}</span>
+              </ng-container>
 
-    <!-- Año Inicio -->
-    <ng-container matColumnDef="anioInicio">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-blue">Año Inicio</th>
-      <td mat-cell *matCellDef="let p">{{ p.anioInicio }}</td>
-    </ng-container>
+              <ng-container *ngIf="p.veredas.length > 3">
+                <span class="vereda-chip more" (click)="verVeredas(p.veredas, p.nombre)">
+                  +{{ p.veredas.length - 3 }} más
+                </span>
+              </ng-container>
+            </div>
+          </td>
+        </ng-container>
 
-    <!-- Año Fin -->
-    <ng-container matColumnDef="anioFin">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-blue">Año Fin</th>
-      <td mat-cell *matCellDef="let p">{{ p.anioFin || '—' }}</td>
-    </ng-container>
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef class="col-estado" mat-sort-header>Estado</th>
+          <td mat-cell *matCellDef="let p" class="col-estado">
+            <span class="estado-chip" [ngClass]="p.estado | lowercase">{{ p.estado }}</span>
+          </td>
+        </ng-container>
 
-    <!-- Creado por -->
+        <ng-container matColumnDef="anioInicio">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Año Inicio</th>
+          <td mat-cell *matCellDef="let p">{{ p.anioInicio }}</td>
+        </ng-container>
+        <ng-container matColumnDef="anioFin">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Año Fin</th>
+          <td mat-cell *matCellDef="let p">{{ p.anioFin || '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="fechaCreacion">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha creación</th>
+          <td mat-cell *matCellDef="let p">{{ p.fechaCreacion | date:'dd/MM/yyyy' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Acciones</th>
+          <td mat-cell *matCellDef="let p" class="text-center">
+            <button class="btn-icon-action" (click)="editar(p.id!)" title="Editar">
+              <i class="material-icons">edit</i>
+            </button>
+            <button class="btn-icon-action btn-icon-delete" (click)="eliminar(p.id!)" title="Eliminar">
+              <i class="material-icons">delete_outline</i>
+            </button>
+          </td>
+        </ng-container>
 
-    <!-- Fecha creación -->
-    <ng-container matColumnDef="fechaCreacion">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-blue">Fecha creación</th>
-      <td mat-cell *matCellDef="let p">{{ p.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}</td>
-    </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="mat-row-hover"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell text-center" colspan="7">No se encontraron datos para la búsqueda.</td>
+        </tr>
+      </table>
+    </div>
 
-    <!-- Acciones -->
-    <ng-container matColumnDef="acciones">
-      <th mat-header-cell *matHeaderCellDef class="header-blue text-center">Acciones</th>
-      <td mat-cell *matCellDef="let p" class="text-end">
-        <button class="btn btn-sm btn-outline-primary me-2 btn-hover-edit" (click)="editar(p.id!)">Editar</button>
-        <button class="btn btn-sm btn-outline-danger" (click)="eliminar(p.id!)">Eliminar</button>
-      </td>
-    </ng-container>
-
-    <!-- Filas / cabeceras -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+  </div>
 </div>
 
-<!-- Paginador -->
-<mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 15, 20, 30, 50]" showFirstLastButtons></mat-paginator>
-
-<!-- Modal -->
 <div class="modal fade" #projectModal tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
