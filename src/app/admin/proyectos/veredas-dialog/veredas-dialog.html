@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Veredas del Proyecto: {{ data.projectName }}</h2>
+
+<p class="total-count">Total veredas beneficiadas: <strong>{{ data.veredas.length }}</strong></p>
+
+<mat-dialog-content>
+  <ol class="veredas-list">
+    <li *ngFor="let vereda of data.veredas" class="vereda-item">
+      {{ vereda }}
+    </li>
+  </ol>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Cerrar</button>
+</mat-dialog-actions>

@@ -1,70 +1,133 @@
-/* src/app/admin/proyectos/proyecto-list/proyecto-list.scss */
-
-/* 🔵 Fondo azul para cabecera */
-.header-blue {
-    background-color: cornflowerblue !important;
-    color: white;
-    font-weight: 600;
-    font-size: 0.95rem;
+/* Contenedor principal estilo tarjeta */
+.card {
+  border: none;
+  border-radius: 12px; // Bordes redondeados
 }
 
-/* 🟢 Badges de estado */
-.estado-activo {
-    background-color: #16a34a;
-    color: white;
-    font-weight: 500;
-    font-size: 0.75rem;
-    border-radius: 999px;
-    padding: 4px 10px;
+/* Estilos para el buscador de Angular Material */
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #dee2e6;
+}
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #0d6efd; // Color primario al enfocar
 }
 
-.estado-ejecucion {
-    background-color: #f59e0b;
-    color: white;
-    font-weight: 500;
-    font-size: 0.75rem;
-    border-radius: 999px;
-    padding: 4px 10px;
-}
-
-.estado-suspendido {
-    background-color: #6b7280;
-    color: white;
-    font-weight: 500;
-    font-size: 0.75rem;
-    border-radius: 999px;
-    padding: 4px 10px;
-}
-
-/* 🟤 Chips de veredas */
-.vereda-chip {
-    background-color: #e5e7eb;
-    color: #111827;
-    font-size: 0.75rem;
-    padding: 3px 8px;
-    border-radius: 10px;
-    margin-right: 4px;
-    margin-bottom: 2px;
-    display: inline-block;
-}
-
-/* ✨ Tabla con bordes suaves */
+/* Estilos modernos para la tabla */
 .custom-table {
-    border-radius: 12px;
-    overflow: hidden;
-    background-color: white;
+  width: 100%;
+
+  th.mat-header-cell {
+    color: #6c757d; // Texto de cabecera gris
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  td.mat-cell, th.mat-header-cell {
+    padding: 1rem;
+  }
+
+  td.mat-cell {
+    border-bottom: none; // Eliminamos bordes entre filas
+  }
+
+  tr.mat-row-hover:hover {
+    background-color: #f8f9fa; // Efecto hover sutil
+  }
+
+  tr.mat-row:last-child td.mat-cell {
+    border-bottom: none;
+  }
 }
 
-/* 🧼 Zebra clara */
-table tr:nth-child(even) {
-    background-color: #f9fbfc;
+/* Estilos unificados para chips */
+.estado-chip, .vereda-chip {
+  font-weight: 500;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  padding: 5px 10px;
+  margin-right: 4px;
+  margin-bottom: 4px;
+  display: inline-block;
 }
 
-/* 🖱️ Hover sutil */
-table.table-hover>tbody>tr:hover {
-    background-color: rgba(13, 110, 253, 0.04);
+.vereda-chip { background-color: #e9ecef; color: #495057; }
+
+/* --- NUEVOS ESTILOS --- */
+.vereda-chip.more {
+  background-color: #e0e7ff; // Un azul suave
+  color: #0d6efd; // Un azul oscuro para el texto
+  font-weight: 600;
+  cursor: pointer; // Cursor de mano para indicar que es clickeable
+  transition: background-color 0.2s ease;
 }
 
-.btn-hover-edit:hover {
-    background-color: cornflowerblue !important;
+.vereda-chip.more:hover {
+  background-color: #c7d2fe; // Un poco más oscuro al pasar el mouse
+}
+
+/* Contenedor flex para alinear los chips en una línea */
+.veredas-container-flex {
+  display: flex;
+  flex-wrap: wrap; 
+  align-items: center;
+}
+/* --- FIN NUEVOS ESTILOS --- */
+
+
+.estado-chip.finalizado { background-color: #d1fae5; color: #065f46; }
+.estado-chip.en { background-color: #fef3c7; color: #92400e; } /* 'en ejecución' */
+.estado-chip.suspendido { background-color: #e5e7eb; color: #374151; }
+
+/* Estilos para botones de acción con íconos */
+.btn-icon-action {
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  transition: background-color 0.2s ease;
+
+  .material-icons {
+    color: #adb5bd;
+    font-size: 22px;
+  }
+
+  &:hover .material-icons {
+    color: #212529;
+  }
+}
+.btn-icon-delete:hover .material-icons {
+  color: #dc3545;
+}
+
+/* Botón de Acción Flotante (FAB) */
+.btn-fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+  z-index: 1050;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  .material-icons {
+    color: white;
+    font-size: 2rem;
+  }
+}
+
+.col-estado {
+  max-width: 300px;
+  width: 150px;
+  white-space: normal;
+  word-wrap: break-word;
 }

@@ -1,0 +1,53 @@
+h2[mat-dialog-title] {
+    color: #111827;
+    font-weight: 600;
+}
+
+/* AÑADIDO: Estilo para el contador total */
+.total-count {
+    align-self: center;
+    font-size: 0.9rem;
+    color: #4b5563;
+    font-weight: 500;
+    margin-top: -12px;
+}
+
+/* MODIFICADO: Estilos para la lista y los números */
+.veredas-list {
+    list-style: none; // Quitamos los números por defecto
+    counter-reset: veredas-counter; // Iniciamos nuestro propio contador
+    padding-left: 0; // Quitamos el padding por defecto de la lista
+    display: flex;
+    flex-direction: column;
+    gap: 10px; // Espacio entre ítems
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.vereda-item {
+    counter-increment: veredas-counter; // Cada ítem incrementa el contador
+    display: flex;
+    align-items: center;
+    gap: 12px; // Espacio entre el número y el texto
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+/* El círculo que contendrá el número */
+.vereda-item::before {
+    content: counter(veredas-counter); // Muestra el valor del contador
+    font-weight: 700;
+    font-size: 0.8rem;
+    background-color: #e0e7ff;
+    color: #0d6efd;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; // Evita que el círculo se encoja
+}
