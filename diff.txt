@@ -1,0 +1,728 @@
+diff --git a/package-lock.json b/package-lock.json
+index 06d3cf8..8a0a67b 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -8,11 +8,13 @@
+       "name": "geoobrasapp",
+       "version": "0.0.0",
+       "dependencies": {
++        "@angular/cdk": "^20.1.4",
+         "@angular/common": "^20.1.0",
+         "@angular/compiler": "^20.1.0",
+         "@angular/core": "^20.1.0",
+         "@angular/fire": "^20.0.1",
+         "@angular/forms": "^20.1.0",
++        "@angular/material": "^20.1.4",
+         "@angular/platform-browser": "^20.1.0",
+         "@angular/router": "^20.1.0",
+         "@ng-select/ng-select": "^15.1.3",
+@@ -388,6 +390,42 @@
+         }
+       }
+     },
++    "node_modules/@angular/cdk": {
++      "version": "20.1.4",
++      "resolved": "https://registry.npmjs.org/@angular/cdk/-/cdk-20.1.4.tgz",
++      "integrity": "sha512-Uz0fLZRWpKG7xniXSw3Hr4QEvTlVurov07BBz6nRWseGxeHCDkFqKc3UEriovCQ7ylJdR6miIu7j+h4PWLH48g==",
++      "dependencies": {
++        "parse5": "^8.0.0",
++        "tslib": "^2.3.0"
++      },
++      "peerDependencies": {
++        "@angular/common": "^20.0.0 || ^21.0.0",
++        "@angular/core": "^20.0.0 || ^21.0.0",
++        "rxjs": "^6.5.3 || ^7.4.0"
++      }
++    },
++    "node_modules/@angular/cdk/node_modules/entities": {
++      "version": "6.0.1",
++      "resolved": "https://registry.npmjs.org/entities/-/entities-6.0.1.tgz",
++      "integrity": "sha512-aN97NXWF6AWBTahfVOIrB/NShkzi5H7F9r1s9mD3cDj4Ko5f2qhhVoYMibXF7GlLveb/D2ioWay8lxI97Ven3g==",
++      "engines": {
++        "node": ">=0.12"
++      },
++      "funding": {
++        "url": "https://github.com/fb55/entities?sponsor=1"
++      }
++    },
++    "node_modules/@angular/cdk/node_modules/parse5": {
++      "version": "8.0.0",
++      "resolved": "https://registry.npmjs.org/parse5/-/parse5-8.0.0.tgz",
++      "integrity": "sha512-9m4m5GSgXjL4AjumKzq1Fgfp3Z8rsvjRNbnkVwfu2ImRqE5D0LnY2QfDen18FSY9C573YU5XxSapdHZTZ2WolA==",
++      "dependencies": {
++        "entities": "^6.0.0"
++      },
++      "funding": {
++        "url": "https://github.com/inikulin/parse5?sponsor=1"
++      }
++    },
+     "node_modules/@angular/cli": {
+       "version": "20.1.3",
+       "resolved": "https://registry.npmjs.org/@angular/cli/-/cli-20.1.3.tgz",
+@@ -596,6 +634,22 @@
+         "rxjs": "^6.5.3 || ^7.4.0"
+       }
+     },
++    "node_modules/@angular/material": {
++      "version": "20.1.4",
++      "resolved": "https://registry.npmjs.org/@angular/material/-/material-20.1.4.tgz",
++      "integrity": "sha512-V+EyzKwgqzUIAwXpr8chSMN0nKw+FEs5A/WgC2+CuW7T/FCFp6BW7Am2H51gR8onlqjLpduxyx8HLTifQ0hS6A==",
++      "dependencies": {
++        "tslib": "^2.3.0"
++      },
++      "peerDependencies": {
++        "@angular/cdk": "20.1.4",
++        "@angular/common": "^20.0.0 || ^21.0.0",
++        "@angular/core": "^20.0.0 || ^21.0.0",
++        "@angular/forms": "^20.0.0 || ^21.0.0",
++        "@angular/platform-browser": "^20.0.0 || ^21.0.0",
++        "rxjs": "^6.5.3 || ^7.4.0"
++      }
++    },
+     "node_modules/@angular/platform-browser": {
+       "version": "20.1.3",
+       "resolved": "https://registry.npmjs.org/@angular/platform-browser/-/platform-browser-20.1.3.tgz",
+diff --git a/package.json b/package.json
+index 3c8e0d8..426be77 100644
+--- a/package.json
++++ b/package.json
+@@ -20,11 +20,13 @@
+   },
+   "private": true,
+   "dependencies": {
++    "@angular/cdk": "^20.1.4",
+     "@angular/common": "^20.1.0",
+     "@angular/compiler": "^20.1.0",
+     "@angular/core": "^20.1.0",
+     "@angular/fire": "^20.0.1",
+     "@angular/forms": "^20.1.0",
++    "@angular/material": "^20.1.4",
+     "@angular/platform-browser": "^20.1.0",
+     "@angular/router": "^20.1.0",
+     "@ng-select/ng-select": "^15.1.3",
+@@ -50,4 +52,4 @@
+     "karma-jasmine-html-reporter": "~2.1.0",
+     "typescript": "~5.8.2"
+   }
+-}
++}
+\ No newline at end of file
+diff --git a/scripts/set-data-veredas.json b/scripts/set-data-veredas.json
+index e8f94c5..16fd298 100644
+--- a/scripts/set-data-veredas.json
++++ b/scripts/set-data-veredas.json
+@@ -55,5 +55,8 @@
+   { "id": "41de5922-edcb-4f5f-b0cc-5ca9a249c837", "name": "Santa Teresa (A)" },
+   { "id": "f94f074a-b9ec-426e-893b-19f319d63886", "name": "Santa Teresa (B)" },
+   { "id": "2fd82039-9468-41f2-8fc1-0c2f7d11b93a", "name": "Cristales" },
+-  { "id": "c75e7e3f-1a41-47f5-8f0b-07a847eb8fd2", "name": "Villanueva" }
++  { "id": "c75e7e3f-1a41-47f5-8f0b-07a847eb8fd2", "name": "Villanueva" },
++  { "id": "3766894e-2d1d-4ee1-b464-0464282b9466", "name": "Zona urbana" },
++  { "id": "fd7d55b7-9092-416e-bf36-ff90fee150fd", "name": "San José del Nus" },
++  { "id": "28cb8150-3ab4-4ab5-848d-13f9c8a28d69", "name": "Providencia" }
+ ]
+diff --git a/src/app/admin/proyectos/proyecto-form/proyecto-form.html b/src/app/admin/proyectos/proyecto-form/proyecto-form.html
+index 08c781e..f566124 100644
+--- a/src/app/admin/proyectos/proyecto-form/proyecto-form.html
++++ b/src/app/admin/proyectos/proyecto-form/proyecto-form.html
+@@ -65,7 +65,7 @@
+     <!-- Campo para añadir nuevas fotos -->
+     <div class="mt-3">
+       <label for="fotos" class="form-label">{{ proyecto ? 'Añadir más fotos' : 'Subir fotos' }}</label>
+-      <input id="fotos" type="file" class="form-control" accept="image/*" multiple (change)="onFileSelected($event)" />
++      <input id="fotos" #fotos type="file" class="form-control" accept="image/*" multiple (change)="onFileSelected($event)" />
+     </div>
+   </div>
+   
+diff --git a/src/app/admin/proyectos/proyecto-form/proyecto-form.ts b/src/app/admin/proyectos/proyecto-form/proyecto-form.ts
+index 39e0774..646c169 100644
+--- a/src/app/admin/proyectos/proyecto-form/proyecto-form.ts
++++ b/src/app/admin/proyectos/proyecto-form/proyecto-form.ts
+@@ -30,12 +30,13 @@ export class ProyectoForm implements OnInit {
+   newFilesToUpload: File[] = [];
+   photosToDelete: string[] = [];
+   newFilesPreviewUrls: string[] = [];
+-  
++
+   private _proyecto?: Proyecto;
+   veredasList: Vereda[] = [];
+ 
+   // Evento emitido al guardar correctamente el formulario
+   @Output() formSaved = new EventEmitter<void>();
++  @ViewChild('fotos') fileInput!: ElementRef<HTMLInputElement>;
+ 
+   // Setter para recibir el proyecto a editar. Al cambiar, se actualiza el formulario y el estado de imágenes.
+   @Input() set proyecto(valor: Proyecto | undefined) {
+@@ -71,9 +72,12 @@ export class ProyectoForm implements OnInit {
+   }
+ 
+   ngOnInit(): void {
++    this.resetFormState();
+     // Carga las veredas para el selector al inicializar el componente
+     this.veredaSvc.getAll().subscribe((arr) => {
+       this.veredasList = arr;
++      console.log("this.veredasList", this.veredasList);
++
+     });
+   }
+ 
+@@ -197,9 +201,20 @@ export class ProyectoForm implements OnInit {
+       anioInicio: new Date().getFullYear(),
+     });
+     this.resetImageState();
++    this.resetFileInput();
+   }
+ 
+   resetForm() {
+-  this.proyectoForm.reset(); // asumiendo que tienes un FormGroup llamado 'form'
+-}
++    this.proyectoForm.reset();
++  }
++
++  resetFileInput(): void {
++    console.log("antes de resetear");
++    
++    if (this.fileInput?.nativeElement) {
++      console.log("reseteando");
++      
++      this.fileInput.nativeElement.value = '';
++    }
++  }
+ }
+diff --git a/src/app/admin/proyectos/proyecto-list/proyecto-list.html b/src/app/admin/proyectos/proyecto-list/proyecto-list.html
+index 76f53fc..f936e54 100644
+--- a/src/app/admin/proyectos/proyecto-list/proyecto-list.html
++++ b/src/app/admin/proyectos/proyecto-list/proyecto-list.html
+@@ -5,53 +5,84 @@
+   <button class="btn btn-primary" (click)="openModal()">+ Nuevo Proyecto</button>
+ </div>
+ 
++<mat-form-field appearance="outline" class="w-100 mb-3">
++  <mat-label>Buscar (nombre, vereda, año…)</mat-label>
++  <input matInput #search placeholder="Ej: San Joaquín" (keyup)="applyFilter(search.value)" />
++</mat-form-field>
++
++<!-- Tabla paginada -->
+ <div class="table-responsive">
+-  <table class="table table-striped table-hover align-middle mb-4">
+-  <thead class="table-dark">
+-    <tr>
+-      <th>Nombre</th>
+-      <th>Veredas</th>
+-      <th>Estado</th>
+-      <th>Año Inicio</th>
+-      <th>Año Fin</th>
+-      <th>Creado por</th>
+-      <th>Fecha creación</th>
+-      <th class="text-end">Acciones</th>
+-    </tr>
+-  </thead>
+-  <tbody>
+-    <tr *ngFor="let p of proyectos$ | async">
+-      <td>{{ p.nombre }}</td>
+-      <td>
+-        {{ getVeredasDisplay(p.veredas) }}
++  <table mat-table [dataSource]="dataSource" matSort class="table align-middle custom-table" style="zoom: 0.9;">
++
++    <!-- Nombre -->
++    <ng-container matColumnDef="nombre">
++      <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-blue">Nombre</th>
++      <td mat-cell *matCellDef="let p">{{ p.nombre }}</td>
++    </ng-container>
++
++    <!-- Veredas -->
++    <ng-container matColumnDef="veredas">
++      <th mat-header-cell *matHeaderCellDef class="header-blue">Veredas</th>
++      <td mat-cell *matCellDef="let p">
++        <ng-container *ngFor="let v of p.veredas">
++          <span class="vereda-chip">{{ getVeredaName(v) }}</span>
++        </ng-container>
+       </td>
+-      <td>
+-        <span class="badge" [ngClass]="{
+-            'bg-success': p.estado === 'Finalizado',
+-            'bg-warning text-dark': p.estado === 'En ejecución',
+-            'bg-secondary': p.estado === 'Suspendido'
+-          }">
++    </ng-container>
++
++    <!-- Estado -->
++    <ng-container matColumnDef="estado">
++      <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-blue">Estado</th>
++      <td mat-cell *matCellDef="let p">
++        <span [ngClass]="{
++          'estado-activo': p.estado === 'Finalizado',
++          'estado-ejecucion': p.estado === 'En ejecución',
++          'estado-suspendido': p.estado === 'Suspendido'
++        }">
+           {{ p.estado }}
+         </span>
+       </td>
+-      <td>{{ p.anioInicio }}</td>
+-      <td>{{ p.anioFin || '—' }}</td>
+-      <td>{{ p.creadoPor }}</td>
+-      <td>{{ p.fechaCreacion| date:'dd/MM/yyyy HH:mm' }}</td>
++    </ng-container>
++
++    <!-- Año Inicio -->
++    <ng-container matColumnDef="anioInicio">
++      <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-blue">Año Inicio</th>
++      <td mat-cell *matCellDef="let p">{{ p.anioInicio }}</td>
++    </ng-container>
++
++    <!-- Año Fin -->
++    <ng-container matColumnDef="anioFin">
++      <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-blue">Año Fin</th>
++      <td mat-cell *matCellDef="let p">{{ p.anioFin || '—' }}</td>
++    </ng-container>
+ 
+-      <td class="text-end">
+-        <button class="btn btn-sm btn-outline-primary me-2" (click)="editar(p.id!)">
+-          Editar
+-        </button>
+-        <button class="btn btn-sm btn-outline-danger" (click)="eliminar(p.id!)">
+-          Eliminar
+-        </button>
++    <!-- Creado por -->
++
++    <!-- Fecha creación -->
++    <ng-container matColumnDef="fechaCreacion">
++      <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-blue">Fecha creación</th>
++      <td mat-cell *matCellDef="let p">{{ p.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}</td>
++    </ng-container>
++
++    <!-- Acciones -->
++    <ng-container matColumnDef="acciones">
++      <th mat-header-cell *matHeaderCellDef class="header-blue text-center">Acciones</th>
++      <td mat-cell *matCellDef="let p" class="text-end">
++        <button class="btn btn-sm btn-outline-primary me-2 btn-hover-edit" (click)="editar(p.id!)">Editar</button>
++        <button class="btn btn-sm btn-outline-danger" (click)="eliminar(p.id!)">Eliminar</button>
+       </td>
+-    </tr>
+-  </tbody>
+-</table>
++    </ng-container>
++
++    <!-- Filas / cabeceras -->
++    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
++    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
++  </table>
++</div>
++
++<!-- Paginador -->
++<mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 15, 20, 30, 50]" showFirstLastButtons></mat-paginator>
+ 
+-<!-- Modal para crear/editar proyecto -->
++<!-- Modal -->
+ <div class="modal fade" #projectModal tabindex="-1" aria-hidden="true">
+   <div class="modal-dialog modal-lg modal-dialog-centered">
+     <div class="modal-content">
+@@ -64,7 +95,6 @@
+       <div class="modal-body">
+         <proyecto-form (formSaved)="closeModal()" [proyecto]="selected" (saved)="onSaved()" (cancelled)="closeModal()">
+         </proyecto-form>
+-        
+       </div>
+     </div>
+   </div>
+diff --git a/src/app/admin/proyectos/proyecto-list/proyecto-list.scss b/src/app/admin/proyectos/proyecto-list/proyecto-list.scss
+index e69de29..c745dbe 100644
+--- a/src/app/admin/proyectos/proyecto-list/proyecto-list.scss
++++ b/src/app/admin/proyectos/proyecto-list/proyecto-list.scss
+@@ -0,0 +1,70 @@
++/* src/app/admin/proyectos/proyecto-list/proyecto-list.scss */
++
++/* 🔵 Fondo azul para cabecera */
++.header-blue {
++    background-color: cornflowerblue !important;
++    color: white;
++    font-weight: 600;
++    font-size: 0.95rem;
++}
++
++/* 🟢 Badges de estado */
++.estado-activo {
++    background-color: #16a34a;
++    color: white;
++    font-weight: 500;
++    font-size: 0.75rem;
++    border-radius: 999px;
++    padding: 4px 10px;
++}
++
++.estado-ejecucion {
++    background-color: #f59e0b;
++    color: white;
++    font-weight: 500;
++    font-size: 0.75rem;
++    border-radius: 999px;
++    padding: 4px 10px;
++}
++
++.estado-suspendido {
++    background-color: #6b7280;
++    color: white;
++    font-weight: 500;
++    font-size: 0.75rem;
++    border-radius: 999px;
++    padding: 4px 10px;
++}
++
++/* 🟤 Chips de veredas */
++.vereda-chip {
++    background-color: #e5e7eb;
++    color: #111827;
++    font-size: 0.75rem;
++    padding: 3px 8px;
++    border-radius: 10px;
++    margin-right: 4px;
++    margin-bottom: 2px;
++    display: inline-block;
++}
++
++/* ✨ Tabla con bordes suaves */
++.custom-table {
++    border-radius: 12px;
++    overflow: hidden;
++    background-color: white;
++}
++
++/* 🧼 Zebra clara */
++table tr:nth-child(even) {
++    background-color: #f9fbfc;
++}
++
++/* 🖱️ Hover sutil */
++table.table-hover>tbody>tr:hover {
++    background-color: rgba(13, 110, 253, 0.04);
++}
++
++.btn-hover-edit:hover {
++    background-color: cornflowerblue !important;
++}
+\ No newline at end of file
+diff --git a/src/app/admin/proyectos/proyecto-list/proyecto-list.ts b/src/app/admin/proyectos/proyecto-list/proyecto-list.ts
+index 7068530..e7887fa 100644
+--- a/src/app/admin/proyectos/proyecto-list/proyecto-list.ts
++++ b/src/app/admin/proyectos/proyecto-list/proyecto-list.ts
+@@ -6,112 +6,165 @@ import {
+   ViewChild,
+   ElementRef,
+   inject,
+-  OnInit,
+   OnDestroy,
+ } from '@angular/core';
+ import { CommonModule } from '@angular/common';
+-import { Router, ActivatedRoute, RouterModule } from '@angular/router';
+-import { map, Observable, Subscription } from 'rxjs';
++import { Router, RouterModule } from '@angular/router';
++import { Observable, Subscription, map } from 'rxjs';
+ 
+ import { ProyectoService, Proyecto } from '../../../core/services/proyecto.service';
+ import { ProyectoForm } from '../proyecto-form/proyecto-form';
+ import { Modal } from 'bootstrap';
+ import { Vereda, VeredaService } from '../../../core/services/vereda.service';
+ 
++/* Angular Material */
++import { MatTableDataSource, MatTableModule } from '@angular/material/table';
++import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
++import { MatSort, MatSortModule } from '@angular/material/sort';
++import { MatInputModule } from '@angular/material/input';
++import { MatFormFieldModule } from '@angular/material/form-field';
++
+ @Component({
+   selector: 'proyecto-list',
+   standalone: true,
+-  imports: [CommonModule, RouterModule, ProyectoForm],
+   templateUrl: './proyecto-list.html',
+   styleUrls: ['./proyecto-list.scss'],
++  imports: [
++    CommonModule,
++    RouterModule,
++    MatTableModule,
++    MatPaginatorModule,
++    MatSortModule,
++    MatInputModule,
++    MatFormFieldModule,
++    ProyectoForm
++],
+ })
+ export class ProyectoList implements AfterViewInit, OnDestroy {
+-  /** Stream de proyectos desde Firestore */
++  /* --------- Material table --------- */
++  displayedColumns: string[] = [
++    'nombre',
++    'veredas',
++    'estado',
++    'anioInicio',
++    'anioFin',
++    'fechaCreacion',
++    'acciones',
++  ];
++  dataSource = new MatTableDataSource<Proyecto>([]);
++
++  @ViewChild(MatPaginator) paginator!: MatPaginator;
++  @ViewChild(MatSort) sort!: MatSort;
++
++  /* --------- Streams & look-ups --------- */
+   proyectos$!: Observable<Proyecto[]>;
+-  private editSub?: Subscription;
+-  /** Proyecto seleccionado para edición */
+-  selected?: Proyecto;
++  veredasList: Vereda[] = [];
+ 
+-  /** Referencia al elemento modal de Bootstrap */
++  /* --------- Modal --------- */
+   @ViewChild('projectModal', { static: true }) modalEl!: ElementRef;
++  private modalInstance!: Modal;
+ 
+-  private modalInstance!: any;
+-  veredasList: Vereda[] = [];
++  /* --------- Misc --------- */
++  selected?: Proyecto;
++  private editSub?: Subscription;
+ 
+-  /** Inyecciones */
++  /* --------- Services --------- */
+   private proyectoSvc = inject(ProyectoService);
+   private veredaSvc = inject(VeredaService);
+   private router = inject(Router);
+-  private route = inject(ActivatedRoute);
+-  formSaved: boolean = false;
++
+   constructor() {
++    /* 1. Stream para otras partes que sigan usando | async */
+     this.proyectos$ = this.proyectoSvc.getAll().pipe(
+-      map(proyectos => proyectos.map(p => {
+-        // Usamos '(p as any)' para poder acceder al método .toDate() sin que TypeScript se queje.
+-        const fecha = (p as any).fechaCreacion;
+-
+-        if (fecha && typeof fecha.toDate === 'function') {
+-          // Creamos una nueva propiedad 'fechaCreacion' del tipo correcto (Date)
+-          return { ...p, fechaCreacion: fecha.toDate() };
+-        }
+-
+-        // Si no es un Timestamp, lo devolvemos como está.
+-        return p;
+-      }))
++      map(arr =>
++        arr.map(p => ({
++          ...p,
++          /* normalizo Timestamp → Date para evitar errores de pipes */
++          fechaCreacion:
++            (p as any).fechaCreacion &&
++              typeof (p as any).fechaCreacion.toDate === 'function'
++              ? (p as any).fechaCreacion.toDate()
++              : p.fechaCreacion,
++        }))
++      )
+     );
+-    // Suscríbete a la lista de veredas para hacer lookup
+-    this.veredaSvc.getAll().subscribe((arr) => {
+-      this.veredasList = arr;
+-    });
++
++    /* 2. Listado de veredas para mostrar nombres legibles */
++    this.veredaSvc.getAll().subscribe(v => (this.veredasList = v));
+   }
+ 
+-  ngAfterViewInit() {
+-    // Inicializo el modal de Bootstrap
++  ngAfterViewInit(): void {
++    /* Modal Bootstrap */
+     this.modalInstance = new Modal(this.modalEl.nativeElement);
+-  }
+ 
+-  /** Abre modal para nuevo o edición */
+-  openModal(proy?: Proyecto) {
+-    console.log("proy", proy);
++    /* ✅  Usa el stream que YA normaliza fechaCreacion */
++    this.proyectos$.subscribe(proyectos => {
++      this.dataSource.data = proyectos;        // ← ahora son Date válidos
++      this.dataSource.paginator = this.paginator;
++      this.dataSource.sort = this.sort;
++    });
+ 
+-    this.selected = proy;
+-    this.modalInstance.show();
++    /* Filtro global */
++    this.dataSource.filterPredicate = (p, txt) => {
++      const term = txt.trim().toLowerCase();
++
++      /* 🔑 convierte ids → nombres */
++      const veredasTexto = (p.veredas ?? [])
++        .map(id => this.getVeredaName(id).toLowerCase())
++        .join(' ');
++
++      return (
++        (p.nombre?.toLowerCase().includes(term) ?? false) ||
++        veredasTexto.includes(term) ||
++        (p.anioInicio?.toString().includes(term) ?? false) ||
++        (p.anioFin?.toString().includes(term) ?? false)
++      );
++    };
+   }
+ 
+-  /** Cierra el modal */
+-  closeModal() {
+-    this.modalInstance.hide();
++  /* ⬇ ahora recibe el texto directo, no el evento */
++  applyFilter(value: string): void {
++    this.dataSource.filter = value.trim().toLowerCase();
++    this.dataSource.paginator?.firstPage();
+   }
+ 
+-  /** Callback cuando el formulario emite 'saved' */
+-  onSaved() {
+-    this.closeModal();
+-    // La lista se refresca automáticamente (Firestore emite cambios en tiempo real)
++  ngOnDestroy(): void {
++    this.editSub?.unsubscribe();
+   }
+ 
+-  editar(id: string) {
+-    // Si ya hay una suscripción previa, la destruimos
+-    this.editSub = this.proyectoSvc.getOne(id).subscribe((p) => {
+-      this.openModal(p);
+-    });
++
++  getVeredaName(id: string): string {
++    return this.veredasList.find(v => v.id === id)?.name || id;
+   }
+ 
+-  /** Eliminar proyecto */
+-  eliminar(id: string) {
+-    this.proyectoSvc.delete(id);
++  getVeredasDisplay(ids?: string[]): string {
++    if (!ids?.length) return '';
++    return ids.map(this.getVeredaName.bind(this)).join(', ');
+   }
+-  getVeredaName(id: string): string {
+ 
+-    return this.veredasList.find((v) => v.id === id)?.name || id;
++  /* ===========================================================
++     = CRUD handlers
++     =========================================================== */
++  openModal(proy?: Proyecto): void {
++    this.selected = proy;
++    this.modalInstance.show();
+   }
+-  getVeredasDisplay(veredas?: string[]): string {
+ 
+-    if (!veredas || !Array.isArray(veredas)) return '';
+-    return veredas.map((id) => this.getVeredaName(id)).join(', ');
++  closeModal(): void {
++    this.modalInstance.hide();
+   }
+ 
+-  ngOnDestroy() {
++  onSaved(): void {
++    /* el modal se cierra desde el hijo → refresco en tiempo real */
++    this.closeModal();
++  }
++
++  editar(id: string): void {
+     this.editSub?.unsubscribe();
++    this.editSub = this.proyectoSvc.getOne(id).subscribe(p => this.openModal(p));
+   }
+ 
++  eliminar(id: string): void {
++    this.proyectoSvc.delete(id);
++  }
+ }
+diff --git a/src/index.html b/src/index.html
+index 1061a6b..8431786 100644
+--- a/src/index.html
++++ b/src/index.html
+@@ -1,16 +1,21 @@
+ <!doctype html>
+ <html lang="en">
++
+ <head>
+   <meta charset="utf-8">
+   <title>Geoobrasapp</title>
+   <base href="/">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="icon" type="image/x-icon" href="favicon.ico">
++  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
++  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+ </head>
++
+ <body>
+   <app-root></app-root>
+-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+-          integrity="sha384-ENjdO4Dr2bkBIFxQpeoYz1HlQ/Kf5RxbG4b52t8eDqro0q2LG0G4eqb67EVP3Re+"
+-          crossorigin="anonymous"></script>
++  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
++    integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
++    crossorigin="anonymous"></script>
+ </body>
+-</html>
++
++</html>
+\ No newline at end of file
+diff --git a/src/styles.scss b/src/styles.scss
+index 81153ea..2cfc55e 100644
+--- a/src/styles.scss
++++ b/src/styles.scss
+@@ -1,5 +1,39 @@
+-@use "@ng-select/ng-select/themes/default.theme.css";
+-@use 'sweetalert2/src/sweetalert2.scss';
++/* ──────────────────────────────
++   src/styles.scss
++──────────────────────────────── */
++
++/* 1️⃣  Módulos SCSS (deben ir primero) */
++@use '@angular/material' as mat;
++@use 'sweetalert2/src/sweetalert2.scss' as *;
++
++/* 2️⃣  CSS puro (puede ir luego) */
++@import "@ng-select/ng-select/themes/default.theme.css";
++
++/* 3️⃣  Reglas y theming */
++html {
++  @include mat.theme((
++    color: (
++      primary: mat.$azure-palette,
++      tertiary: mat.$blue-palette,
++    ),
++    typography: Roboto,
++    density: 0,
++  ));
++}
++
++body {
++  /* Tema claro por defecto */
++  color-scheme: light;
++
++  /* Variables de Angular Material */
++  background-color: var(--mat-sys-surface);
++  color: var(--mat-sys-on-surface);
++  font: var(--mat-sys-body-medium);
++
++  /* Reset del margin UA */
++  margin: 0;
++}
++
+ 
+ /* You can add global styles to this file, and also import other style files */
+ :root {
+@@ -38,14 +72,8 @@
+   .table .btn + .btn {
+     margin-left: 0 !important;
+   }
++  
+ }
+ 
+-@media (max-width: 1200px) {
+-  .table .btn {
+-    width: 100%;
+-    margin-bottom: 0.3rem;
+-  }
+-  .table .btn + .btn {
+-    margin-left: 0 !important;
+-  }
+-}
+\ No newline at end of file
++html, body { height: 100%; }
++body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

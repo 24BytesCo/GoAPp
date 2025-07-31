@@ -1,0 +1,70 @@
+/* src/app/admin/proyectos/proyecto-list/proyecto-list.scss */
+
+/* 🔵 Fondo azul para cabecera */
+.header-blue {
+    background-color: cornflowerblue !important;
+    color: white;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+/* 🟢 Badges de estado */
+.estado-activo {
+    background-color: #16a34a;
+    color: white;
+    font-weight: 500;
+    font-size: 0.75rem;
+    border-radius: 999px;
+    padding: 4px 10px;
+}
+
+.estado-ejecucion {
+    background-color: #f59e0b;
+    color: white;
+    font-weight: 500;
+    font-size: 0.75rem;
+    border-radius: 999px;
+    padding: 4px 10px;
+}
+
+.estado-suspendido {
+    background-color: #6b7280;
+    color: white;
+    font-weight: 500;
+    font-size: 0.75rem;
+    border-radius: 999px;
+    padding: 4px 10px;
+}
+
+/* 🟤 Chips de veredas */
+.vereda-chip {
+    background-color: #e5e7eb;
+    color: #111827;
+    font-size: 0.75rem;
+    padding: 3px 8px;
+    border-radius: 10px;
+    margin-right: 4px;
+    margin-bottom: 2px;
+    display: inline-block;
+}
+
+/* ✨ Tabla con bordes suaves */
+.custom-table {
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: white;
+}
+
+/* 🧼 Zebra clara */
+table tr:nth-child(even) {
+    background-color: #f9fbfc;
+}
+
+/* 🖱️ Hover sutil */
+table.table-hover>tbody>tr:hover {
+    background-color: rgba(13, 110, 253, 0.04);
+}
+
+.btn-hover-edit:hover {
+    background-color: cornflowerblue !important;
+}

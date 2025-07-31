@@ -65,7 +65,7 @@
     <!-- Campo para añadir nuevas fotos -->
     <div class="mt-3">
       <label for="fotos" class="form-label">{{ proyecto ? 'Añadir más fotos' : 'Subir fotos' }}</label>
-      <input id="fotos" type="file" class="form-control" accept="image/*" multiple (change)="onFileSelected($event)" />
+      <input id="fotos" #fotos type="file" class="form-control" accept="image/*" multiple (change)="onFileSelected($event)" />
     </div>
   </div>
   
