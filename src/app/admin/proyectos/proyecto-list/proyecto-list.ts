@@ -17,6 +17,9 @@ import { ProyectoForm } from '../proyecto-form/proyecto-form';
 import { Modal } from 'bootstrap';
 import { Vereda, VeredaService } from '../../../core/services/vereda.service';
 
+/* Añadido para la confirmación de borrado */
+import Swal from 'sweetalert2';
+
 /* Angular Material */
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -42,8 +45,7 @@ import { VeredasDialog } from '../veredas-dialog/veredas-dialog';
     MatInputModule,
     MatFormFieldModule,
     ProyectoForm,
-    MatDialogModule, 
-    VeredasDialog, 
+    MatDialogModule,
   ],
 })
 export class ProyectoList implements AfterViewInit, OnDestroy {
@@ -87,7 +89,7 @@ export class ProyectoList implements AfterViewInit, OnDestroy {
           ...p,
           fechaCreacion:
             (p as any).fechaCreacion &&
-            typeof (p as any).fechaCreacion.toDate === 'function'
+              typeof (p as any).fechaCreacion.toDate === 'function'
               ? (p as any).fechaCreacion.toDate()
               : p.fechaCreacion,
         }))
@@ -117,7 +119,7 @@ export class ProyectoList implements AfterViewInit, OnDestroy {
       );
     };
   }
-  
+
   applyFilter(value: string): void {
     this.dataSource.filter = value.trim().toLowerCase();
     this.dataSource.paginator?.firstPage();
@@ -158,8 +160,33 @@ export class ProyectoList implements AfterViewInit, OnDestroy {
     this.editSub = this.proyectoSvc.getOne(id).subscribe(p => this.openModal(p));
   }
 
+  /**
+ * Muestra una confirmación antes de eliminar el proyecto.
+ * Si el usuario confirma, procede con el borrado.
+ */
   eliminar(id: string): void {
-    this.proyectoSvc.delete(id);
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: '¡No podrás revertir esta acción!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, ¡bórralo!',
+      cancelButtonText: 'Cancelar',
+    }).then(result => {
+      if (result.isConfirmed) {
+        this.proyectoSvc.delete(id).then(() => {
+          Swal.fire({
+            title: '¡Borrado!',
+            text: 'El proyecto ha sido eliminado.',
+            icon: 'success',
+            timer: 1500,
+            showConfirmButton: false,
+          });
+        });
+      }
+    });
   }
 
   /**
@@ -173,7 +200,7 @@ export class ProyectoList implements AfterViewInit, OnDestroy {
       data: {
         projectName: projectName,
         // Usamos tu función getVeredaName para pasar la lista de nombres
-        veredas: veredas.map(v => this.getVeredaName(v)) 
+        veredas: veredas.map(v => this.getVeredaName(v))
       }
     });
   }
